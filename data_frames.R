@@ -104,3 +104,13 @@ mtcars[1] # returns a data.frame
 head(mtcars[c('mpg', 'cyl')]) # get multiple columns
 
 # Overview data frame operations
+df2 <- data.frame(col.name.1 = 2000, col.name.2 = 'new')
+df2
+
+dfnew <- rbind(df, df2)
+dfnew
+
+df$newcol <- 2 * df$col.name.1
+df
+colnames(df) <- c('1','2','3')
+df
