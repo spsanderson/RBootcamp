@@ -26,4 +26,30 @@ str(df)
 summary(df)
 
 #####
-# 
+# Selection and Indexing
+df[1, ] # The first row of the data.frame just like a matrix
+df[, 1] # The first column of the data.frame just like a matrix
+df[,'rain'] # Slice by column name
+df[1:5, c('days','temp')]
+
+df$days # Dollar sign notiation
+df$temp # returns a vector
+df$rain
+df['temp'] # Bracket notation returns a data.frame
+
+# Grab a subset
+days.rained <- subset(df, subset = rain == TRUE)
+days.rained
+subset(df, subset = temp > 23)
+
+# Sort
+sorted.temp <- order(df['temp'])
+sorted.temp
+df[sorted.temp,]
+
+desc.temp <- order(-df['temp'])
+desc.temp
+df[desc.temp, ]
+
+desc.temp <- order(-df$temp)
+df[desc.temp, ]
