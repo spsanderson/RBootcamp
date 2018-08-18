@@ -114,3 +114,33 @@ df$newcol <- 2 * df$col.name.1
 df
 colnames(df) <- c('1','2','3')
 df
+
+colnames(df)[1] <- "New Col Name"
+df
+
+# Select multiple rows
+df[1:10, ]
+df[1:3, ]
+
+head(df, 7)
+
+# Select everything but the second row of df
+df[-2, ]
+
+# Conditional selction using mtcars
+mtcars[ mtcars$mpg > 20, ]
+
+# Filter by two different columns
+mtcars[ (mtcars$mpg > 20) & (mtcars$cyl == 6), ]
+mtcars[ (mtcars$mpg > 20) & (mtcars$cyl == 6)
+        , c('mpg', 'cyl', 'disp', 'hp')]
+
+subset(mtcars, subset = ((mpg > 20) & (cyl == 6)))
+subset(mtcars, (mpg > 20) & (cyl == 6))
+
+mtcars[ , c(1,2,3,4)]
+mtcars[, c('mpg', 'cyl', 'disp')]
+
+# Missing data
+is.na(mtcars)
+any(is.na(mtcars)) # will return false because there are no missing cells
