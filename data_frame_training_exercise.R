@@ -54,7 +54,9 @@ head(df)
 # value of more than 2.5. 
 filtered.df <- subset(df, subset = ((df$hp > 100) & (df$wt > 2.5)))
 head(filtered.df)
-mean(filtered.df$mpg)                      
+mean(filtered.df$mpg)         
+# Extra method
+mean(subset(df, hp > 100 & wt > 2.5)$mpg)
 
 # Ex 11: What is the mpg of the Hornet Sportabout? 
 df[['Hornet Sportabout','mpg']]
