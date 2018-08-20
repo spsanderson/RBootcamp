@@ -60,3 +60,5 @@ mean(subset(df, hp > 100 & wt > 2.5)$mpg)
 
 # Ex 11: What is the mpg of the Hornet Sportabout? 
 df[['Hornet Sportabout','mpg']]
+# OR
+df['Hornet Sportabout', ]$mpg
