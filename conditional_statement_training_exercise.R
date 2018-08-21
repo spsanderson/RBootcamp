@@ -37,3 +37,19 @@ if (length(x) == 3) {
   print(sorted.x[2])
   print(sorted.x[3])
 } 
+
+if ((length(x) == 3) & (x[1] > x[2])) {
+  fir <- x[1]
+  sec <- x[2]
+} else {
+  fir <- x[2]
+  sec <- x[1]
+}
+
+if((length(x) == 3) & (x[3] > fir) & (x[3] > sec)) {
+  thi <- sec
+  sec <- fir
+  fir <- x[3]
+}
+
+print(paste(fir, sec, thi))
