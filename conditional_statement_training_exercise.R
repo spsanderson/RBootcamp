@@ -61,3 +61,18 @@ if((length(x) == 3) & (x[3] > fir) & (x[3] > sec)) {
 }
 
 print(paste(fir, sec, thi))
+
+# Ex 4: Write a script that uses if,else if, and else statements to print the 
+# max element in a numeric vector with 3 elements. 
+x <- c(2,100,10)
+
+if ( (x[1] > x[2]) & (x[1] > x[3]) ) {
+  # if x[1] is bigger than 2 and 3
+  print(x[1])
+  # x[1] cleared, no compare 2 and 3
+} else if ( x[2] > x[3] ) {
+  print(x[2])
+  # 2 cleared no print last number
+} else {
+  print(x[3])
+}
