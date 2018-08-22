@@ -42,3 +42,52 @@ if ((ham >= 10) & (cheese >= 10)) {
 }
 
 print(report)
+
+# While Loops
+x <- 0
+
+while (x < 10) {
+  print(paste0("x = ", x))
+  x <- x + 1
+  if (x == 10) {
+    print(paste("X is now equal to 10! Break the loop!"))
+    break
+  }
+}
+
+# For loop
+vec <- 1:10
+for (i in vec) {
+  print(i)
+}
+
+for (temp.var in vec) {
+  result <- temp.var + 1
+  print(paste("The temp.var plus 1 is equal to:", result))
+}
+
+my.list <- list(1:10, mtcars, 12)
+for (item in my.list) {
+  print(item)
+}
+
+mat <- matrix(1:25, nrow = 5)
+for (num in mat) { # goes by columns
+  print(num)
+}
+
+# nested for loop
+for (row in 1:nrow(mat)) {
+  for (col in 1:ncol(mat)) {
+    #print(paste("The selected row is:", row))
+    print(
+      paste('The element at row:', row
+        , 'and col:', col
+        ,'is:', mat[row,col]
+        )
+      )
+  }
+}
+
+#####
+# Functions
