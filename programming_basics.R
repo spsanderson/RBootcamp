@@ -108,6 +108,7 @@ add_num <- function(num1, num2) {
   my.sum <- num1 + num2 # Scope is local only inside of function
   return(my.sum)
 }
+add_num(4,5)
 result <- add_num(4, 5)
 result
 # Scope Global
