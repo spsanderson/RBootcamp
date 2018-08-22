@@ -91,3 +91,34 @@ for (row in 1:nrow(mat)) {
 
 #####
 # Functions
+# Non-input function
+hello <- function() {
+  print("Hello")
+}
+hello()
+
+hello <- function(name = 'User') {
+  print(paste("Hello", name))
+}
+hello("Steve")
+hello()
+
+add_num <- function(num1, num2) {
+  # print(num1 + num2)
+  my.sum <- num1 + num2 # Scope is local only inside of function
+  return(my.sum)
+}
+result <- add_num(4, 5)
+result
+# Scope Global
+v <- "I'm a Global Variable"
+stuff <- "I'm Global Stuff"
+
+fun <- function(stuff) {
+  print(v)
+  stuff <- "Reassign stuff inside of this function fun"
+  print(stuff)
+}
+
+fun(stuff)
+print(stuff)
