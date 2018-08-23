@@ -60,9 +60,14 @@ count_func(1,c(1,1,1,1,1,1,1,1,1))
 # For example, a load of 6 kg requires a minimum of two bars 
 # (1 5kg bars and 1 1kg bars). A load of 17 kg requires a minimum of 5 bars 
 # (3 5kg bars and 2 1kg bars). 
-s <- 1 # Small Bar
-l <- 5 # Large Bar
-o <- 1# Order
+
+bars_needed_short <- function(pack){
+  s_need <- pack %% 5
+  l_need <- (pack - s_need) / 5
+  return(s_need + l_need)
+}
+bars_needed_short(1)
+
 bars_needed <- function(o) {
   s <- 1
   l <- 5
