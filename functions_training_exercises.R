@@ -128,12 +128,12 @@ is_prime <- function (n) {
     return(F)
   } else if ( n <= 3 ) {
     return(T)
-  } else if ( (n %% 2) == 0 | (n %% 3) == 0 ) {
+  } else if ( ((n %% 2) == 0) | ((n %% 3) == 0) ) {
     return(F)
   } else {
     i = 5
-    while (( i * i) <= n) {
-      if( (n % i) == 0 | (n % (i + 2)) == 0) {
+    while ( (i * i) <= n) {
+      if( ((n %% i) == 0) | (n %% (i + 2) == 0) ) {
         return(F)
       }
       i = i + 6
@@ -141,8 +141,4 @@ is_prime <- function (n) {
     return(T)
   }
 }
-is_prime(1)
-is_prime(2)
-is_prime(3)
-is_prime(17)
-is_prime(100)
+is_prime(131)
