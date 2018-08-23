@@ -131,7 +131,7 @@ is_prime <- function (n) {
 is_prime(131)
 is_prime(-1)
 
-# Jose's Naive Method
+# Jose's Naive Method - not memory efficient
 p_check <- function(num){
   if (num == 2){
     return(T)
@@ -143,5 +143,5 @@ p_check <- function(num){
   }
   return(F)
 }
-p_check(131)
-is_prime(131)
+p_check(131000000000)
+is_prime(131000000000)
