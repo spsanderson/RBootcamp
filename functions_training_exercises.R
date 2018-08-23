@@ -116,4 +116,33 @@ nd3 <- function(a) {
   }
   return(sum(s_vec))
 }
-nd3(c(15,15,14))
+nd3(c(7,2,3))
+nd3(c(3,6,9))
+nd3(c(9,11,12))
+
+
+# Ex 6: Create a function that will return TRUE if an input integer is prime. 
+# Otherwise, return FALSE. You may want to look into the any() function
+is_prime <- function (n) {
+  if ( n <= 1 ) {
+    return(F)
+  } else if ( n <= 3 ) {
+    return(T)
+  } else if ( (n %% 2) == 0 | (n %% 3) == 0 ) {
+    return(F)
+  } else {
+    i = 5
+    while (( i * i) <= n) {
+      if( (n % i) == 0 | (n % (i + 2)) == 0) {
+        return(F)
+      }
+      i = i + 6
+    }
+    return(T)
+  }
+}
+is_prime(1)
+is_prime(2)
+is_prime(3)
+is_prime(17)
+is_prime(100)
