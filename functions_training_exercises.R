@@ -55,8 +55,65 @@ count_func(1,c(1,1,1,1,1,1,1,1,1))
 
 # Ex 4: We want to ship bars of aluminum. We will create a function that accepts
 # an integer representing the requested kilograms of aluminum for the package to
-# be shipped. To fullfill these order, we have small bars (1 kilogram each) and 
+# be shipped. To fullfill these orders, we have small bars (1 kilogram each) and 
 # big bars (5 kilograms each). Return the least number of bars needed.
 # For example, a load of 6 kg requires a minimum of two bars 
 # (1 5kg bars and 1 1kg bars). A load of 17 kg requires a minimum of 5 bars 
 # (3 5kg bars and 2 1kg bars). 
+s <- 1 # Small Bar
+l <- 5 # Large Bar
+o <- 1# Order
+bars_needed <- function(o) {
+  s <- 1
+  l <- 5
+  if( o >= l ) {
+    # The size of the order is bigger than or equal to the size of the large bar
+    s_need <- o %% l # Small bars needed
+    l_need <- ( (o - s_need) / l ) # Large bars needed
+    print(
+      paste0(
+        "Total Bars Needed: ", (s_need + l_need)," (",
+        s_need, " Small and ",
+        l_need, " Large.)"
+      )
+    )
+    result <- ( s_need + l_need )
+    return(result)
+  } else if ( (o < l ) & ( o >= s) ) {
+    # The size of the order is smaller than the large bar but bigger than the
+    # small bar
+    s_need <- o
+    print(
+      paste0(
+        "Total Bars Needed: ", s_need," (",
+        s_need, " Small bars and no large.)"
+      )
+    )
+    result <- s_need
+    return(result)
+  } else {
+    # The order is less than 1
+    result <- 0
+    print("The size of the order is 0, no bars needed.")
+    return(result)
+  }
+}
+
+# Ex 5: Create a function that accepts 3 integer values and returns their sum. 
+# However, if an integer value is evenly divisible by 3, then it does not count 
+# towards the sum. Return zero if all numbers are evenly divisible by 3. 
+# Hint: You may want to use the append() function.
+a <- c(1,2,3)
+
+nd3 <- function(a) {
+  s_vec <- numeric()
+  for (num in a) {
+    if( (num %% 3) == 0 ) {
+      s_vec <- append(s_vec, 0, after = length(s_vec))
+    } else {
+      s_vec <- append(s_vec, num, after = length(s_vec))
+    }
+  }
+  return(sum(s_vec))
+}
+nd3(c(15,15,14))
