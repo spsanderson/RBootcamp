@@ -82,6 +82,7 @@ bars_needed <- function(s,l,o) {
   return(result)
 }
 bars_needed(1,15,5)
+
 # Ex 5: Create a function that accepts 3 integer values and returns their sum. 
 # However, if an integer value is evenly divisible by 3, then it does not count 
 # towards the sum. Return zero if all numbers are evenly divisible by 3. 
