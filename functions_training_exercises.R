@@ -124,6 +124,7 @@ nd3(c(9,11,12))
 # Ex 6: Create a function that will return TRUE if an input integer is prime. 
 # Otherwise, return FALSE. You may want to look into the any() function
 is_prime <- function (n) {
+  # https://en.wikipedia.org/wiki/Primality_test#Pseudocode
   if ( n <= 1 ) {
     return(F)
   } else if ( n <= 3 ) {
