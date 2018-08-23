@@ -144,4 +144,4 @@ p_check <- function(num){
   return(F)
 }
 p_check(131000000000) # requires a vector of size 976.0 Gb
-is_prime(131000000000)
+is_prime(999999999999999)
