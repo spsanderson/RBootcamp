@@ -115,6 +115,8 @@ is_prime <- function (n) {
     return(T)
   } else if ( ((n %% 2) == 0) | ((n %% 3) == 0) ) {
     return(F)
+  } else if (n < 0){
+    return(F)
   } else {
     i = 5
     while ( (i * i) <= n) {
@@ -126,4 +128,20 @@ is_prime <- function (n) {
     return(T)
   }
 }
+is_prime(131)
+is_prime(-1)
+
+# Jose's Naive Method
+p_check <- function(num){
+  if (num == 2){
+    return(T)
+  }
+  for (x in 2:num-1){
+    if(num %% x == 0) {
+      return(T)
+    }
+  }
+  return(F)
+}
+p_check(131)
 is_prime(131)
