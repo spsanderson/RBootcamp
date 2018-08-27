@@ -80,3 +80,55 @@ add_choice <- function(num, choice){
 print(add_choice(2,10))
 
 print(sapply(v, add_choice, choice = 100))
+
+#####
+# Math functions
+abs(2) # absolute value
+abs(-2)
+v <- c(-2,-3,0,4)
+abs(v)
+sum(v)
+mean(v)
+round(mean(v), 1)
+
+#####
+# Regular expressions / Regex
+# grepl returns logical
+# grep returns an index
+text <- "Hi there, do you know who are coding for?"
+grepl('coding', text)
+grepl('dog', text)
+grepl('do you', text)
+v <- c('a','b','c','d','d')
+v
+grepl('b',v)
+grep('b', v)
+
+grepl('hello','hello world')
+grep('a', c('b', 'a'))
+
+#####
+# Dates and timestamps
+Sys.Date()
+today <- Sys.Date()
+class(today)
+
+c <- "1990-01-01"
+class(c)
+my.date <- as.Date(c)
+class(my.date)
+
+my.date <- as.Date("Nov-03-90", format = "%b-%d-%y")
+my.date
+
+# %d Day of the month (decimal number)
+# %m Month (decimal number)
+# %b Month (abbreviated)
+# %B Month (Full name)
+# %y year (2 digit)
+# %Y year (4 digit)
+
+as.Date("June, 01,2002", format = "%B,%d,%Y")
+as.POSIXct("11:02:03", format = "%H:%M:%S")
+help(strptime)
+strptime("11:02:03", format = "%H:%M:%S")
