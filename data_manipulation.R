@@ -62,3 +62,23 @@ summarise(flights, total_time = sum(air_time, na.rm = T))
 
 sample_n(flights, 10)
 sample_frac(flights, 0.05)
+
+# Pipe Operator ####
+df <- mtcars
+
+# Nesting
+result <- arrange(sample_n(filter(df, mpg > 20), size = 5), desc(mpg))
+print(result)
+
+# Multiple Assingments
+a <- filter(df, mpg > 20)
+b <- sample_n(a, 5)
+c <- arrange(b, desc(mpg))
+print(c)
+
+# piped
+result <- df %>%
+  filter(mpg > 20) %>%
+  sample_n(size = 5) %>%
+  arrange(desc(mpg))
+print(result)
