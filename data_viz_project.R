@@ -31,7 +31,7 @@ pointsToLabel <- c("Russia", "Venezuela", "Iraq", "Myanmar", "Sudan",
                    "United States", "Germany", "Britain", "Barbados", "Norway", "Japan",
                    "New Zealand", "Singapore")
 
-pl <- ggplot(
+p1 <- ggplot(
   data = df
   , aes(
     x = CPI
@@ -40,7 +40,7 @@ pl <- ggplot(
   )
 )
 # Geometries
-pl <- pl +
+p1 <- p1 +
   geom_point(
     shape = 1
     , size = 5
@@ -48,7 +48,7 @@ pl <- pl +
 
 # Facets
 # Stats
-p1 <- pl +
+p1 <- p1 +
   geom_smooth(
     aes(
       group = 1
