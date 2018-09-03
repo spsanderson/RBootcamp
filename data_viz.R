@@ -1,7 +1,9 @@
 # Data Visualization
+# library load ####
 library(ggplot2)
 library(ggplot2movies)
 
+# Histogram ####
 # Data & Aesthetics
 pl <- ggplot(
   data = movies
@@ -21,9 +23,7 @@ pl <- pl +
   )
 
 # Facets
-
 # Statistics
-
 # Coordinates
 pl <- pl +
   xlab("Movie Rating") +
@@ -31,7 +31,6 @@ pl <- pl +
   ggtitle("My Title")
 
 # Theme
-
 # Print graph
 pl
 
@@ -59,7 +58,7 @@ pl1 <- pl1 + scale_color_gradient(low = "blue", high = "red")
 # Print graph
 pl1
 
-# Bar Plots
+# Bar Plots ####
 df <- mpg
 # Data & Aestetics
 pl1 <- ggplot(
@@ -83,3 +82,5 @@ pl1 <- pl1 + geom_bar(
 # Theme
 # Print Graph
 pl1
+
+# Boxplot ####
