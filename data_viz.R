@@ -84,3 +84,31 @@ pl1 <- pl1 + geom_bar(
 pl1
 
 # Boxplot ####
+rm(list = ls())
+df <- mtcars
+
+# Data & Aestetics
+bplot <- ggplot(
+  data = df
+  , aes(
+    x = as.factor(cyl)
+    , y = mpg
+  )
+)
+# Geometris
+bplot <- bplot +
+  geom_boxplot(
+    aes(
+      fill = factor(cyl)
+    )
+  )
+# Facets
+# Statistics
+# Coordinates
+bplot <- bplot +
+  coord_flip()
+# Theme
+# Print Graph
+bplot
+
+# Bi-variate plotting ####
