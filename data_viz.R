@@ -35,3 +35,26 @@ pl <- pl +
 # Print graph
 pl
 
+df <- mtcars
+# Data & Aesthetics
+pl <- ggplot(
+  data = df
+  , aes(
+    x = wt
+    , y = mpg
+  )
+)
+# Geometries
+pl1 <- pl + geom_point(
+  size = 3
+  , aes(
+    color = hp
+  )
+)
+# Facets
+# Statistics
+# Coordinates
+# Theme
+pl1 <- pl1 + scale_color_gradient(low = "blue", high = "red")
+# Print graph
+pl1
