@@ -112,3 +112,123 @@ bplot <- bplot +
 bplot
 
 # Bi-variate plotting ####
+rm(list = ls())
+# Data & Aesthetics
+mplot <- ggplot(
+  data = movies
+  , aes(
+    x = year
+    , y = rating
+  )
+)
+# Geometries
+mplot <- mplot +
+  geom_bin2d(
+    binwidth = c(3, 1)
+  )
+
+mplot <- mplot +
+  geom_hex()
+
+mplot <- mplot + 
+  geom_density2d()
+# Facets
+# Stats
+# Coordinates
+# Theme
+mplot <- mplot +
+  scale_fill_gradient(
+    high = "red"
+    , low = "blue"
+  )
+# Print Graph
+mplot
+
+# Coordinates & Facets ####
+rm(list = ls())
+df <- mpg
+# Data & Aestetics
+pl <- ggplot(
+  data = df
+  , aes(
+    x = displ
+    , y = hwy
+  )
+)
+# Geometries
+pl <- pl +
+  geom_point()
+# Facets
+# Stats
+# Coordinates
+pl <- pl +
+  coord_cartesian(
+    xlim = c(1, 4)
+    , ylim = c(15, 30)
+  )
+
+pl <- pl +
+  coord_fixed(
+    ratio = 1/1
+  )
+# Theme
+# Print Graph
+pl
+
+# Data & Aestetics
+pl <- ggplot(
+  data = df
+  , aes(
+    x = displ
+    , y = hwy
+  )
+)
+# Geometries
+pl <- pl +
+  geom_point()
+# Facets
+pl <- pl +
+  facet_grid(
+    . ~ cyl
+  )
+
+pl <- pl +
+  facet_grid(
+    drv ~ .
+  )
+
+pl <- pl +
+  facet_grid(
+    drv ~ cyl
+  )
+# Stats
+# Coordinates
+# Theme
+# Print Graph
+pl
+
+# Themes ####
+library(ggthemes)
+
+rm(list = ls())
+
+df <- mtcars
+# Data & Astheticss
+pl <- ggplot(
+  data = df
+  , aes(
+    x = wt
+    , y = mpg
+  )
+)
+# Geometries
+pl <- pl +
+  geom_point()
+# Facets
+# Stats
+# Coordinates
+# Theme
+pl <- pl +
+  theme_excel()
+# Print Graph
+pl
