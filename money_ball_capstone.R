@@ -19,6 +19,8 @@ head(batting$X2B, 5)
 batting$BA <- batting$H / batting$AB
 tail(batting$BA)
 
-batting$OBP <- ( batting$H + batting$BB + batting$HBP ) / 
+head(batting)
+
+ batting$OBP <- ( batting$H + batting$BB + batting$HBP ) / 
   ( batting$AB + batting$BB + batting$HBP + batting$SF )
 head(batting$OBP)
