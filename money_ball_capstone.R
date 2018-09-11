@@ -33,3 +33,10 @@ head(batting)
  batting$OBP <- ( batting$H + batting$BB + batting$HBP ) / 
   ( batting$AB + batting$BB + batting$HBP + batting$SF )
 head(batting$OBP)
+
+batting$X1B <- (batting$H - batting$X2B - batting$X3B - batting$HR)
+batting$SLG <- (batting$X1B + (2 * batting$X2B) + (3 * batting$X3B) + 
+                  (4 * batting$HR))/batting$AB
+head(batting$SLG)
+profiling_num(batting$SLG)
+hist(batting$SLG)
