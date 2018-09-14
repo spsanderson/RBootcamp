@@ -11,7 +11,7 @@ batting <- read.csv(file.to.load)
 df_status(batting)
 profiling_num(batting)
 describe(batting)
-#rm(file.to.load)
+rm(file.to.load)
 
 # look at data
 head(batting)
@@ -81,3 +81,43 @@ lost.players.2001.2 <- lost.players %>%
 
 nrow(lost.players.2001)
 nrow(lost.players.2001.2)
+
+lost.players.df <- lost.players.2001 %>%
+  select(
+    playerID
+    , H
+    , X2B
+    , X3B
+    , HR
+    , OBP
+    , SLG
+    , BA
+    , AB
+  )
+describe(lost.players.df)
+
+replacement.players.df <- merged.data %>%
+  filter(
+    yearID == 2001
+  )
+nrow(replacement.players.df)
+head(replacement.players.df, 1)
+
+max.salary <- sum(lost.players.2001[,'salary'])
+max.salary
+
+dfa <- replacement.players.df %>%
+  filter(salary <= max.salary * .85, OBP > 0, AB >= 500)
+head(dfa)
+
+ggplot(
+  data = dfa
+  , aes(
+    x = OBP
+    , y = salary
+  )
+) +
+  geom_point()
+
+possible.players <- dfa[, c("playerID", "OBP", "salary","AB")]
+head(arrange(possible.players, desc(OBP)), 5)
