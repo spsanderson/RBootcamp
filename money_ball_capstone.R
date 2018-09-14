@@ -22,7 +22,7 @@ head(batting$X2B, 5)
 # Feature Engineering ####
 # Add Batting Average
 batting$BA <- batting$H / batting$AB
-batting <- batting %>%
+batting %>%
   filter(AB > 0) %>%
   mutate(BA2 = H / AB)
   
@@ -40,3 +40,10 @@ batting$SLG <- (batting$X1B + (2 * batting$X2B) + (3 * batting$X3B) +
 head(batting$SLG)
 profiling_num(batting$SLG)
 hist(batting$SLG)
+
+str(batting)
+
+file.to.load <- file.choose(new = T)
+salary <- read.csv(file.to.load)
+rm(file.to.load)
+
