@@ -44,6 +44,31 @@ hist(batting$SLG)
 str(batting)
 
 file.to.load <- file.choose(new = T)
-salary <- read.csv(file.to.load)
+salary.data <- read.csv(file.to.load)
 rm(file.to.load)
 
+batting.1985 <- batting %>%
+  filter(yearID >= 1985)
+min(batting.1985$yearID)
+
+merged.data <- merge(
+  x = batting.1985
+  , y = salary.data
+  , by = c("playerID", "yearID")
+)
+head(merged.data, 2)
+
+summary(merged.data)
+
+lost.players <- subset(
+  merged.data
+  , playerID %in% c('giambja01','damonjo01','saenzol01')
+  )
+unique(lost.players$playerID)
+
+# or use filter() 
+lost.players.2 <- merged.data %>%
+  filter(playerID %in% c(
+    'giambja01','damonjo01','saenzol01'
+  ))
+unique(lost.players.2$playerID)
