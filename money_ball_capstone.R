@@ -70,5 +70,14 @@ unique(lost.players$playerID)
 lost.players.2 <- merged.data %>%
   filter(playerID %in% c(
     'giambja01','damonjo01','saenzol01'
-  ))
+  )
+)
 unique(lost.players.2$playerID)
+
+lost.players.2001 <- subset(lost.players, lost.players$yearID == 2001)
+# or
+lost.players.2001.2 <- lost.players %>%
+  filter(yearID == 2001)
+
+nrow(lost.players.2001)
+nrow(lost.players.2001.2)
