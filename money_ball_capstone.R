@@ -106,8 +106,17 @@ head(replacement.players.df, 1)
 max.salary <- sum(lost.players.2001[,'salary'])
 max.salary
 
+max.sal <- max(lost.players.2001$salary * 0.85)
+max.sal
+
+min.obp <- sum(lost.players.2001$OBP)
+min.obp
+
+min.ab <- sum(lost.players.2001$AB)
+min.ab
+
 dfa <- replacement.players.df %>%
-  filter(salary <= max.salary * .85, OBP > 0, AB >= 500)
+  filter(salary <= max.sal, OBP >= (min.obp/3), AB >= (min.ab/3))
 head(dfa)
 
 ggplot(
@@ -121,3 +130,11 @@ ggplot(
 
 possible.players <- dfa[, c("playerID", "OBP", "salary","AB")]
 head(arrange(possible.players, desc(OBP)), 5)
+possible.players$AB_Sal <- possible.players$salary/possible.players$AB
+plot(possible.players$AB_Sal)
+possible.players$AB_Sal_OBP <- (possible.players$salary/possible.players$AB)*possible.players$OBP
+plot(possible.players$AB_Sal_OBP)
+head(arrange(possible.players, desc(OBP)), 5)
+head(arrange(possible.players, desc(AB_Sal)), 5)
+head(arrange(possible.players, desc(AB_Sal_OBP)), 5)
+nrow(possible.players)
