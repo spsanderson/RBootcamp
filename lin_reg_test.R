@@ -17,6 +17,8 @@ any(is.na(df))
 library(ggplot2)
 library(ggthemes)
 library(dplyr)
+library(corrplot)
+library(corrgram)
 
 # Correlation ####
 num.cols <- sapply(df, is.numeric)
@@ -25,3 +27,8 @@ head(num.cols)
 # Get numeric data for correlations
 cor.data <- cor(df[,num.cols])
 cor.data
+
+corrplot(cor.data)
+corrplot(cor.data, method = 'color')
+cor.p.test <- cor.mtest(cor.data)
+corrplot(cor.p.test[["p"]])
