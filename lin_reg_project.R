@@ -66,3 +66,37 @@ p2 <- p2 + scale_color_gradient(low = "light blue", high = "orange")
 # Print
 print(p2)
 
+# What is the correlation between temp and count? 
+# Get only numeric columns
+num.cols <- sapply(bike, is.numeric)
+num.cols
+cor.data <- cor(bike[,num.cols])
+cor.data
+
+corrplot(cor.data)
+cor.p.test.bike <- cor.mtest(cor.data)
+corrplot(cor.p.test.bike[["p"]])
+
+# Let's explore the season data. Create a boxplot, with the y axis 
+# indicating count and the x axis begin a box for each season.
+# Data and Aestetics
+bp1 <- ggplot(
+  data = bike
+  , aes(
+    x = factor(season)
+    , y = count
+  )
+  , group(season)
+)
+# Geometries
+bp1 <- bp1 + geom_boxplot(
+  aes(
+    color = factor(season)
+  )
+)
+# Facets
+# Statistics
+# Coordinates
+# Themes
+# Print
+print(bp1)
