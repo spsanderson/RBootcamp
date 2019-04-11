@@ -72,8 +72,10 @@ num.cols <- sapply(bike, is.numeric)
 num.cols
 cor.data <- cor(bike[,num.cols])
 cor.data
-
 corrplot(cor.data)
+
+cor(bike$temp, bike$count)
+
 cor.p.test.bike <- cor.mtest(cor.data)
 corrplot(cor.p.test.bike[["p"]])
 
