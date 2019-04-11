@@ -103,3 +103,88 @@ bp1 <- bp1 + geom_boxplot(
 # Print
 print(bp1)
 
+# Create an "hour" column that takes the hour from the datetime column. 
+# You'll probably need to apply some function to the entire datetime column and reassign it.
+bike$hour <- format(bike$datetime, "%H")
+
+# Now create a scatterplot of count versus hour, with color scale based on temp. 
+# Only use bike data where workingday==1.
+# Optional Additions:
+# Use the additional layer: 
+# scale_color_gradientn(colors=c('color1',color2,etc..)) 
+# where the colors argument is a vector gradient of colors you choose, not just high and low.
+# Use position=position_jitter(w=1, h=0) inside of geom_point() and check out what it does.
+
+# Data and AES
+p3 <- bike %>%
+  filter(workingday == 1) %>%
+  ggplot(
+  aes(
+    x = hour
+    , y = count
+  )
+) +
+# Geometries
+  geom_point(
+    aes(
+      color = temp
+    )
+    , position = position_jitter(w = 1, h = 0)
+  ) +
+# Facets
+# Statistics
+# Coordinates
+# Themes
+  scale_color_gradientn(colors = c("blue","green","red"))
+# Print
+print(p3)
+
+# Data and AES - non-working days
+p4 <- bike %>%
+  filter(workingday != 1) %>%
+  ggplot(
+    aes(
+      x = hour
+      , y = count
+    )
+  ) +
+  # Geometries
+  geom_point(
+    aes(
+      color = temp
+    )
+    , position = position_jitter(w = 1, h = 0)
+  ) +
+  # Facets
+  # Statistics
+  # Coordinates
+  # Themes
+  scale_color_gradientn(colors = c("blue","green","red"))
+# Print
+print(p4)
+
+# Linear model based soley on temperature data
+temp.model = lm(count ~ temp, data = bike)
+summary(temp.model)
+plot(temp.model)
+
+6.0462 + 9.1705*25
+predict(temp.model, newdata = data.frame(temp = 25))
+
+# Use sapply() and as.numeric to change the hour column to a column of numeric values.
+bike$hour.numeric <- sapply(bike$hour, FUN = as.numeric)
+
+# multi model
+lm.bike <- lm(
+  count ~ season
+  + holiday
+  + workingday
+  + weather
+  + temp
+  + humidity
+  + windspeed
+  + factor(hour)
+  , data = bike
+)
+summary(lm.bike)
+plot(lm.bike)
