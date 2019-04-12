@@ -29,11 +29,12 @@ temp_plot <- temp_plot + geom_point(
     color = temp
   )
   , alpha = 0.3
-)
+) +
 # Facets
 # Statistics
 # Coordinates
 # Theme
+  theme_bw()
 # Print
 print(temp_plot)
 
