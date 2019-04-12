@@ -63,7 +63,7 @@ p2 <- p2 + geom_point(
 # Statistics
 # Coordinates
 # Theme
-p2 <- p2 + scale_color_gradient(low = "light blue", high = "orange")
+p2 <- p2 + scale_color_continuous(low = "light blue", high = "orange")
 # Print
 print(p2)
 
@@ -76,6 +76,7 @@ cor.data
 corrplot(cor.data)
 
 cor(bike$temp, bike$count)
+cor(bike[,c("temp","count")])
 
 cor.p.test.bike <- cor.mtest(cor.data)
 corrplot(cor.p.test.bike[["p"]])
@@ -107,7 +108,7 @@ print(bp1)
 # Create an "hour" column that takes the hour from the datetime column. 
 # You'll probably need to apply some function to the entire datetime column and reassign it.
 bike$hour <- format(bike$datetime, "%H")
-
+bike$hour <- sapply(bike$datetime, function(x){format(x,"%H")})
 # Now create a scatterplot of count versus hour, with color scale based on temp. 
 # Only use bike data where workingday==1.
 # Optional Additions:
@@ -129,14 +130,16 @@ p3 <- bike %>%
   geom_point(
     aes(
       color = temp
+      , alpha = 0.5
     )
-    , position = position_jitter(w = 1, h = 0)
+    #, position = position_jitter(w = 1, h = 0)
+    , position = position_jitterdodge()
   ) +
 # Facets
 # Statistics
 # Coordinates
 # Themes
-  scale_color_gradientn(colors = c("blue","green","red"))
+  scale_color_gradientn(colors = c('dark blue', "blue", 'light blue', "green", 'light green','orange','yellow',"red"))
 # Print
 print(p3)
 
