@@ -192,3 +192,20 @@ lm.bike <- lm(
 )
 summary(lm.bike)
 plot(lm.bike)
+
+# make test and future data
+train.data <- bike %>% filter(datetime < '2012-07-01')
+test.data  <- bike %>% filter(datetime >= '2012-07-01')
+
+lm.train <- lm(
+  count ~ season
+  + holiday
+  + workingday
+  + weather
+  + temp
+  + humidity
+  + windspeed
+  + factor(hour)
+  , data = train.data
+)
+summary(lm.train)
