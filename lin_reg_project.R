@@ -132,8 +132,8 @@ p3 <- bike %>%
       color = temp
       , alpha = 0.5
     )
-    #, position = position_jitter(w = 1, h = 0)
-    , position = position_jitterdodge()
+    , position = position_jitter(w = .25, h = 0)
+    #, position = position_jitterdodge()
   ) +
 # Facets
 # Statistics
@@ -157,7 +157,7 @@ p4 <- bike %>%
     aes(
       color = temp
     )
-    , position = position_jitter(w = 1, h = 0)
+    , position = position_jitter(w = .25, h = 0)
   ) +
   # Facets
   # Statistics
