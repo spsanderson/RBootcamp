@@ -76,15 +76,55 @@ df.train %>%
   )
  
 # Age Histogram
+# Data and AES
 df.train %>%
   ggplot(
     aes(
       x = Age.Imputed
     )
   ) +
+  # Geometries
   geom_histogram(
     fill = "light blue"
     , alpha = 0.618
     , color = "black"
+    , binwidth = 5
   ) +
+  # Facets
+  # Stats
+  # Coordinates
+  # Themes
   theme_bw()
+
+# Data and AES
+df.train %>%
+  ggplot(
+    aes(
+      x = Pclass
+      , y = Age.Imputed
+      , fill = factor(Pclass)
+    )
+  ) +
+# Geometries
+  geom_boxplot(
+    alpha = 0.5
+    , outlier.colour = "red"
+  ) +
+# Facets
+  facet_wrap(Sex ~.) +
+# Stats
+# Coordinates
+# Themes
+  theme_bw() +
+  theme(
+    legend.background = element_blank()
+  ) +
+  theme(
+    legend.key = element_blank()
+  ) +
+  labs(
+    y = "Age / Imputed Age"
+    , x = "Class"
+    , fill = "Class"
+    , title = "Boxplot of Age / Imputed Age by Fare Class and Gender"
+  )
