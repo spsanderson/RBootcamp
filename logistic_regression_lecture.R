@@ -3,20 +3,20 @@ library(tidyverse)
 library(Amelia)
 library(funModeling)
 
-# Get File ####
+# Get Train File ####
 df.train <- read.csv(file.choose(new = T))
 
 df.train %>% glimpse()
 
-# Missing Map ####
+# Train Missing Map ####
 missmap(
   df.train
-  , legend = T
+  , legend = F
   , col = c("yellow","black")
   , rank.order = T
 )
 
-# Impute missing Ages ####
+# Impute Train missing Ages ####
 df.train <- df.train %>%
   group_by(
     Sex, Survived, Pclass
@@ -31,7 +31,7 @@ df.train$Age.Imputed <- ifelse(
   , df.train$Age
 )
 
-# Frequencies ####
+# Frequencies Train ####
 freq(
   data = df.train
   , input = c(
@@ -44,6 +44,7 @@ freq(
   )
 )
 
+# Viz Train ####
 # Data and AES
 df.train %>%
   ggplot(
@@ -128,3 +129,145 @@ df.train %>%
     , fill = "Class"
     , title = "Boxplot of Age / Imputed Age by Fare Class and Gender"
   )
+
+# Train Train Model ####
+str(df.train)
+
+# Get rid of some columns
+df.train.clean <- select(
+  df.train, - Cabin, -PassengerId, -Name, -Ticket, -Age, -avg.age
+)
+str(df.train.clean)
+
+# Make factors
+df.train.clean$Survived <- factor(df.train.clean$Survived)
+df.train.clean$Pclass <- factor(df.train.clean$Pclass)
+df.train.clean$SibSp <- factor(df.train.clean$SibSp)
+df.train.clean$Parch <- factor(df.train.clean$Parch)
+str(df.train.clean)
+
+# Train Model
+log.model <- glm(
+  Survived ~ .
+  , family = binomial(link = 'logit')
+  , data = df.train.clean
+)
+summary(log.model)
+
+# Get Test File ####
+df.test <- read.csv(file.choose(new = T))
+df.test %>% glimpse()
+
+# Test Missing Map ####
+missmap(
+  df.test
+  , legend = F
+  , col = c("yellow","black")
+  , rank.order = T
+)
+
+# Impute Test Missing AGe ####
+df.test <- df.test %>%
+  group_by(
+    Sex, Pclass
+  ) %>%
+  mutate(
+    avg.age = round(mean(Age, na.rm = T), 0)
+  )
+
+df.test$Age.Imputed <- ifelse(
+  is.na(df.test$Age)
+  , df.test$avg.age
+  , df.test$Age
+)
+
+
+# Frequencies Train ####
+freq(
+  data = df.test
+  , input = c(
+    'Pclass'
+    , 'Sex'
+    , 'SibSp'
+    , 'Parch'
+    , 'Embarked'
+  )
+)
+
+# Viz Test ####
+# Age Histogram
+# Data and AES
+df.test %>%
+  ggplot(
+    aes(
+      x = Age.Imputed
+    )
+  ) +
+  # Geometries
+  geom_histogram(
+    fill = "light blue"
+    , alpha = 0.618
+    , color = "black"
+    , binwidth = 5
+  ) +
+  # Facets
+  # Stats
+  # Coordinates
+  # Themes
+  theme_bw()
+
+# Data and AES
+df.test %>%
+  ggplot(
+    aes(
+      x = Pclass
+      , y = Age.Imputed
+      , fill = factor(Pclass)
+    )
+  ) +
+  # Geometries
+  geom_boxplot(
+    alpha = 0.5
+    , outlier.colour = "red"
+  ) +
+  # Facets
+  facet_wrap(Sex ~.) +
+  # Stats
+  # Coordinates
+  # Themes
+  theme_bw() +
+  theme(
+    legend.background = element_blank()
+  ) +
+  theme(
+    legend.key = element_blank()
+  ) +
+  labs(
+    y = "Age / Imputed Age"
+    , x = "Class"
+    , fill = "Class"
+    , title = "Boxplot of Age / Imputed Age by Fare Class and Gender"
+  )
+
+# Train Test Model ####
+str(df.test)
+
+# Get rid of some columns
+df.test.clean <- select(
+  df.test, - Cabin, -PassengerId, -Name, -Ticket, -Age, -avg.age
+)
+str(df.test.clean)
+
+# Make factors
+df.test.clean$Pclass <- factor(df.test.clean$Pclass)
+df.test.clean$SibSp <- factor(df.test.clean$SibSp)
+df.test.clean$Parch <- factor(df.test.clean$Parch)
+str(df.test.clean)
+
+# Train Model
+log.model <- glm(
+  Survived ~ .
+  , family = binomial(link = 'logit')
+  , data = df.train.clean
+)
+summary(log.model)
