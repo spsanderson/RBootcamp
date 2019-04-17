@@ -2,6 +2,8 @@
 library(tidyverse)
 library(Amelia)
 library(funModeling)
+library(DataExplorer)
+library(esquisse)
 
 # Get Train File ####
 df.train <- read.csv(file.choose(new = T))
@@ -49,8 +51,8 @@ freq(
 df.train %>%
   ggplot(
     aes(
-      x = Sex
-      , y = Age
+      x = factor(Pclass)
+      , y = Age.Imputed
       , fill = factor(Survived)
     )
   ) +
@@ -60,11 +62,12 @@ df.train %>%
     , outlier.alpha = 0.4
     ) +
 # Facets
+  facet_wrap(vars(Sex)) +
 # Stats
 # Coordinates
 # Themes
   labs(
-    title = "Box-Plot of Age/Sex by Survival"
+    title = "Survival by Gender and Class"
     , y = ""
     , x = ""
     , fill = "Survival"
@@ -74,8 +77,9 @@ df.train %>%
   ) +
   theme(
     legend.key = element_blank()
-  )
- 
+  ) +
+  theme_bw()
+
 # Age Histogram
 # Data and AES
 df.train %>%
