@@ -4,6 +4,9 @@ library(Amelia)
 library(funModeling)
 library(DataExplorer)
 library(esquisse)
+library(caTools)
+
+set.seed(101)
 
 # Get Train File ####
 df.train <- read.csv(file.choose(new = T))
@@ -71,6 +74,7 @@ df.train %>%
     , y = ""
     , x = ""
     , fill = "Survival"
+    , caption = "Training Data"
   ) +
   theme(
     legend.background = element_blank()
@@ -268,10 +272,18 @@ df.test.clean$SibSp <- factor(df.test.clean$SibSp)
 df.test.clean$Parch <- factor(df.test.clean$Parch)
 str(df.test.clean)
 
-# Train Model
-log.model <- glm(
-  Survived ~ .
-  , family = binomial(link = 'logit')
-  , data = df.train.clean
-)
-summary(log.model)
+split <- sample.split(df.train.clean$Survived, SplitRatio = 0.7)
+final.train <- subset(df.train.clean, split == T)
+final.test <- subset(df.train.clean, split == F)
+final.log.model <- glm(Survived ~ ., family = binomial(link = 'logit'), data = final.train)
+summary(final.log.model)
+
+fitted.probabilies <- predict(final.log.model, final.test, type = 'response')
+fittled.results <- ifelse(fitted.probabilies >= 0.5, 1 ,0)
+misClassError <- mean(fittled.results != final.test$Survived)
+print(1 - misClassError)
+
+# Confusion matrix of tuned log model #####
+table(final.test$Survived, fitted.probabilies > 0.5)
+
+# Model on Test Data NO Survied Column #####
