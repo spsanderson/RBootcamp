@@ -279,11 +279,24 @@ final.log.model <- glm(Survived ~ ., family = binomial(link = 'logit'), data = f
 summary(final.log.model)
 
 fitted.probabilies <- predict(final.log.model, final.test, type = 'response')
-fittled.results <- ifelse(fitted.probabilies >= 0.5, 1 ,0)
-misClassError <- mean(fittled.results != final.test$Survived)
+fitted.results <- ifelse(fitted.probabilies >= 0.5, 1 ,0)
+misClassError <- mean(fitted.results != final.test$Survived)
 print(1 - misClassError)
 
 # Confusion matrix of tuned log model #####
 table(final.test$Survived, fitted.probabilies > 0.5)
 
 # Model on Test Data NO Survied Column #####
+log.test.model <- predict(final.log.model, df.test.clean, type = 'response')
+# Above fails because of level 9 in test data but not train data
+df.test.clean %>%
+  filter(Parch == 9)
+# there is only 2 records so lets drop them
+df.test.clean <- df.test.clean %>%
+  filter(Parch != 9)
+
+# Try model again
+log.test.model <- predict(final.log.model, df.test.clean, type = 'response')
+log.test.model.survived.prob <- ifelse(log.test.model >= 0.5, 1, 0)
+summary(log.test.model)
+plot(log.test.model.survived.prob)
