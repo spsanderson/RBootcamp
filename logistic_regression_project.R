@@ -156,3 +156,71 @@ adult$marital_clean <- sapply(adult$marital, marital.reclass.func)
 adult$marital <- adult$marital_clean
 adult <- adult %>%
   select(-marital_clean)
+
+# Country Check ####
+table(adult$country)
+unique(adult$country)
+
+# going to gruop by continent
+country.reclass.func <- function(country) {
+  country <- as.character(country)
+  if(
+    country == 'United-States' |
+    country == 'Honduras' |
+    country == 'Dominican-Republic' |
+    country == 'Outlying-US(Guam-USVI-etc)' |
+    country == 'Cuba' |
+    country == 'Mexico' |
+    country == 'El-Salvador' |
+    country == 'Jamaica' |
+    country == 'Canada' |
+    country == 'Haiti' |
+    country == 'Puerto-Rico' |
+    country == 'Guatemala' |
+    country == 'Nicaragua'
+  ) {
+    return('North-America')
+  } else if (
+    country == 'Iran' |
+    country == 'Laos' |
+    country == 'China' |
+    country == 'Philippines' |
+    country == 'Cambodia' |
+    country == 'Taiwan' |
+    country == 'Japan' |
+    country == 'Vietnam' |
+    country == 'Thailand' |
+    country == 'Hong' |
+    country == 'India'
+  ) {
+    return('Asia')
+  } else if (
+    country == 'Columbia' |
+    country == 'South' |
+    country == 'Trinidad' |
+    country == 'Ecuador' |
+    country == 'Peru'
+  ) {
+    return('South-America')
+  } else if (
+    country == 'Hungry' |
+    country == 'England' |
+    country == 'Scotland' |
+    country == 'Holand-Netherlands' |
+    country == 'Italy' |
+    country == 'France' |
+    country == 'Yugoslavia' |
+    country == 'Germany' |
+    country == 'Poland' |
+    country == 'Greece' |
+    country == 'Ireland'
+  ) {
+    return('Europe')
+  } else if(
+    country == 'Portugal'
+  ) {
+    return('Africa')
+  } else {
+    return('Unclassified')
+  }
+}
