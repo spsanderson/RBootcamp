@@ -14,6 +14,8 @@ head(adult, 5)
 # Lets drop the column X as it is a secondary index
 adult <- adult %>%
   select(-X)
+
+# View Data ####
 head(adult, 1)
 str(adult)
 summary(adult)
@@ -50,3 +52,107 @@ adult <- adult %>%
       )
     )
   )
+
+# reslect columns
+adult <- adult %>%
+  select(
+    -type_employer, -type_employer_dplyr
+  )
+
+# The assignment says to group govt jobs, i'm not quite sure about this, lets lookk
+# at age and income
+adult %>%
+  filter(
+    type_employer_clean == 'State-gov' | 
+      type_employer_clean == 'Local-gov' | 
+      type_employer_clean == 'Federal-gov'
+  ) %>%
+  ggplot(
+    aes(
+      x = type_employer_clean
+      , y = age
+      , fill = income
+    )
+  ) +
+  geom_boxplot(
+    outlier.colour = 'red'
+  ) +
+  labs(
+    title = "Boxplot Government Emplyment Type by Income Level and Gender",
+    x = "Government Employer Type",
+    y = "Age",
+    fill = "Govt Type"
+    ) +
+  theme_bw() +
+  theme(
+    legend.background = element_blank()
+  ) +
+  theme(
+    legend.key = element_blank()
+  ) +
+  facet_wrap(vars(sex))
+# The average ages above are not significantly different from each group of government employer type
+# so it should be ok to reduce these groups into Government employee
+# write a function to do this and do this via a piped dplyr method
+govt.emp.reclass.func <- function(job){
+  job <- as.character(job)
+  if(job == 'State-gov' | job == 'Local-gov' | job == 'Federal-gov') {
+    return('SL-gov')
+  } else {
+    return(job)
+  }
+}
+
+adult$type_emp_govt <- sapply(adult$type_employer_clean, govt.emp.reclass.func)
+
+# dplyr style
+adult <- adult %>%
+  mutate(
+    type_employer_dplyr = ifelse(
+      (
+        type_employer_clean == 'State-gov' | 
+        type_employer_clean == 'Local-gov' | 
+        type_employer_clean == 'Federal-gov'
+      )
+      , 'SL-gov'
+      , as.character(type_employer_clean)
+      )
+    )
+
+# Since all look good we can make adult$type_employer equal to type_employer_clean
+adult$type_employer <- NA
+adult$type_employer <- adult$type_emp_govt
+
+# reslect data frame
+adult <- adult %>%
+  select(-type_employer_clean, -type_emp_govt, -type_employer_dplyr)
+
+# Marital Status ####
+# Look at marital status and pair it down
+table(adult$marital)
+# reduce to 
+# Married
+# Not-Married
+# Never-Married
+marital.reclass.func <- function(marital){
+  marital <- as.character(marital)
+  if(
+    marital == 'Married-AF-spouse' |
+    marital == 'Married-civ-spouse' |
+    marital == 'Married-spouse-absent'
+  ){
+    return('Married')
+  } else if (
+    marital == 'Divorced' |
+    marital == 'Separated' |
+    marital == 'Widowed'
+  ) {
+    return('Not-Married')
+  } else {
+    return(marital)
+  }
+}
+adult$marital_clean <- sapply(adult$marital, marital.reclass.func)
+adult$marital <- adult$marital_clean
+adult <- adult %>%
+  select(-marital_clean)
