@@ -233,3 +233,15 @@ adult %>% select(
 ) %>%
   distinct_all() %>%
   arrange(continent)
+
+# make reclassed columns factors
+str(adult)
+adult$marital <- factor(adult$marital)
+adult$type_employer <- factor(adult$type_employer)
+adult$continent <- factor(adult$continent)
+str(adult)
+
+# drop country from data frame and leave continent
+adult <- adult %>%
+  select(-country)
+str(adult)
