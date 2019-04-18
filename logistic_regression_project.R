@@ -5,6 +5,7 @@ library(funModeling)
 library(DataExplorer)
 library(esquisse)
 library(caTools)
+library(ROCR)
 
 # Get File ####
 adult <- read.csv(file.choose(new = T))
@@ -340,3 +341,27 @@ adult %>%
     , legend.key = element_blank()
     , axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
   ) 
+
+# Build Logit Model ####
+# Split adult into train and test with a 70/30 split
+# check head
+head(adult, 5)
+
+# Split 
+split <- sample.split(adult$income, SplitRatio = 0.7)
+train <- subset(adult, split == T)
+test <- subset(adult, split == F)
+
+# Training model
+train.log.mod <- glm(
+  formula = income ~ . #-education_num -occupation -continent -fnlwgt
+  , family = binomial(link = 'logit')
+  # , weights = fnlwgt # causes algo to fail convergence possible to overfit, perfect separation
+  , data = train
+  )
+summary(train.log.mod)
+anova(train.log.mod)
+
+# use step() on train.log.mod
+train.log.mod.stp <- step(train.log.mod, k = 2, trace = T)
+summary(train.log.mod)
