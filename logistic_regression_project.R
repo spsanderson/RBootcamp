@@ -92,11 +92,11 @@ adult %>%
   ) +
   facet_wrap(vars(sex))
 # The average ages above are not significantly different from each group of government employer type
-# so it should be ok to reduce these groups into Government employee
+# so it should be ok to reduce these groups into Government employee group state and local
 # write a function to do this and do this via a piped dplyr method
 govt.emp.reclass.func <- function(job){
   job <- as.character(job)
-  if(job == 'State-gov' | job == 'Local-gov' | job == 'Federal-gov') {
+  if(job == 'State-gov' | job == 'Local-gov') {
     return('SL-gov')
   } else {
     return(job)
@@ -111,8 +111,7 @@ adult <- adult %>%
     type_employer_dplyr = ifelse(
       (
         type_employer_clean == 'State-gov' | 
-        type_employer_clean == 'Local-gov' | 
-        type_employer_clean == 'Federal-gov'
+        type_employer_clean == 'Local-gov' 
       )
       , 'SL-gov'
       , as.character(type_employer_clean)
@@ -245,3 +244,99 @@ str(adult)
 adult <- adult %>%
   select(-country)
 str(adult)
+
+Amelia::missmap(adult)
+plot_missing(adult)
+
+# Viz EDA ####
+# Use ggplot2 to create a histogram of ages, colored by income
+# Data and AES
+adult %>%
+  ggplot(
+    aes(
+      x = age
+      , fill = income
+      )
+    ) +
+  # Geometries
+  geom_histogram(
+    color = "black"
+    , binwidth = 1
+    ) +
+  labs(
+    title = "Histogram of Age"
+    , x = "Age"
+    , y = "Count"
+    , fill = "Income"
+    ) +
+  theme(
+    legend.background = element_blank()
+  ) +
+  theme(
+    legend.key = element_blank()
+  ) +
+  theme_bw()
+
+# Plot a histogram of hours worked per week
+# Data and AES
+adult %>%
+  ggplot(
+    aes(
+      x = hr_per_week
+      , fill = income
+    )
+  ) +
+  # Geometries
+  geom_histogram(
+    color = "black"
+    , binwidth = 5
+  ) +
+  # Facets
+  # Statistics
+  # Coordinates
+  # Theme
+  theme(
+    legend.background = element_blank()
+    , legend.key = element_blank()
+  ) +
+  labs(
+    title = "Histogram of Hours Worked Per Week"
+    , y = "Count"
+    , x = "Hours Worked per Week"
+    , fill = "Income"
+  ) + 
+  theme_bw()
+
+# Create a barplot of region with the fill color defined by income class. 
+# Optional: Figure out how rotate the x axis text for readability
+adult %>%
+  group_by(continent, income) %>%
+  summarise(inc_n = n()) %>%
+  # data and aes
+  ggplot(
+    aes(
+      x = reorder(continent, -inc_n)
+      , y = inc_n
+      , fill = income
+    )
+  ) +
+  # Geometries
+  geom_bar(
+    color = 'black'
+    , stat = 'identity'
+  ) +
+  # Facets
+  # Statistics
+  # Coordinates
+  # Theme
+  labs(
+    title = "Barplot of Counts by Continent"
+    , x = ""
+    , y = ""
+    , fill = 'Income'
+  ) +
+  theme(
+    legend.background = element_blank()
+    , legend.key = element_blank()
+    , axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
+  ) 
