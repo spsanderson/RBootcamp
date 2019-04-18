@@ -197,13 +197,13 @@ country.reclass.func <- function(country) {
   } else if (
     country == 'Columbia' |
     country == 'South' |
-    country == 'Trinidad' |
+    country == 'Trinadad&Tobago' |
     country == 'Ecuador' |
     country == 'Peru'
   ) {
     return('South-America')
   } else if (
-    country == 'Hungry' |
+    country == 'Hungary' |
     country == 'England' |
     country == 'Scotland' |
     country == 'Holand-Netherlands' |
@@ -224,3 +224,12 @@ country.reclass.func <- function(country) {
     return('Unclassified')
   }
 }
+
+# reclass country to continent
+adult$continent <- sapply(adult$country, country.reclass.func)
+
+adult %>% select(
+  country, continent
+) %>%
+  distinct_all() %>%
+  arrange(continent)
