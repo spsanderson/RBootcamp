@@ -340,12 +340,13 @@ adult %>%
     legend.background = element_blank()
     , legend.key = element_blank()
     , axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
-  ) 
+  )
 
-# Build Logit Model ####
+ # Build Logit Model ####
 # Split adult into train and test with a 70/30 split
 # check head
 head(adult, 5)
+set.seed(101)
 
 # Split 
 split <- sample.split(adult$income, SplitRatio = 0.7)
@@ -363,5 +364,12 @@ summary(train.log.mod)
 anova(train.log.mod)
 
 # use step() on train.log.mod
-train.log.mod.stp <- step(train.log.mod, k = 2, trace = T)
+train.log.mod.stp <- step(train.log.mod)
 summary(train.log.mod)
+
+# Train Confusion Matrix ####
+test$predicted.income <- predict(train.log.mod.stp, newdata = test, type = 'response')
+conf.mat <- as.matrix(table(test$income, test$predicted.income > 0.5))
+model.acc <- (conf.mat[1,1]+conf.mat[2,2])/sum(conf.mat)
+model.recall <- conf.mat[1,1]/(conf.mat[1,1]+conf.mat[1,2])
+model.precision <-  conf.mat[1,1]/(conf.mat[1,1]+conf.mat[2,1])
