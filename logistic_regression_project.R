@@ -373,3 +373,66 @@ conf.mat <- as.matrix(table(test$income, test$predicted.income > 0.5))
 model.acc <- (conf.mat[1,1]+conf.mat[2,2])/sum(conf.mat)
 model.recall <- conf.mat[1,1]/(conf.mat[1,1]+conf.mat[1,2])
 model.precision <-  conf.mat[1,1]/(conf.mat[1,1]+conf.mat[2,1])
+
+# Use MLR ####
+library(mlr)
+library(rJava)
+# Make train and test tasks
+trainTask <- makeClassifTask(data = train, target = "income")
+testTask <- makeClassifTask(data = test, target = "income")
+
+# Check trainTask and testTakes
+trainTask
+testTask
+
+# normalize the data
+trainTask <- normalizeFeatures(trainTask, method = 'standardize')
+testTask <- normalizeFeatures(testTask, method = 'standardize')
+
+# Feature importance
+lm.feat <- generateFilterValuesData(
+  trainTask
+  , method = c(
+    "information.gain"
+    , 'chi.squared'
+  )
+)
+plotFilterValues(lm.feat)
+
+# Logit mlr mode ####
+logistic.learner <- makeLearner('classif.logreg', predict.type = 'response')
+
+# cross validate
+cv.logistic <- crossval(
+  learner = logistic.learner
+  , task = trainTask
+  , iters = ncol(train)
+  , stratify = T
+  , measures = acc
+  , show.info = T
+)
+
+cv.logistic$aggr
+cv.logistic$measures.test
+
+# train model
+fmodel <- train(logistic.learner, trainTask)
+getLearnerModel(fmodel)
+
+# predict on test
+fpmodel <- predict(fmodel, testTask)
+
+# create submission fiel
+fpmodel$data$response
+submit <- data.frame(
+  fpmodel$data
+)
+head(submit)
+table(submit$truth, submit$response)
+
+# mlr logit confustion matrix ####
+mlr.mat <- as.matrix(table(submit$truth, submit$response))
+print(mlr.mat)
+mlr.model.acc <- (mlr.mat[1,1] + mlr.mat[2,2])/sum(mlr.mat)
+mlr.model.recall <- mlr.mat[1,1]/(mlr.mat[1,1] + mlr.mat[1,2])
+mlr.model.precision <-  mlr.mat[1,1]/(mlr.mat[1,1] + mlr.mat[2,1])
