@@ -422,7 +422,7 @@ getLearnerModel(fmodel)
 # predict on test
 fpmodel <- predict(fmodel, testTask)
 
-# create submission fiel
+# create submission file
 fpmodel$data$response
 submit <- data.frame(
   fpmodel$data
@@ -430,8 +430,58 @@ submit <- data.frame(
 head(submit)
 table(submit$truth, submit$response)
 
-# mlr logit confustion matrix ####
+# mlr logit confusion matrix ####
 mlr.mat <- as.matrix(table(submit$truth, submit$response))
 print(mlr.mat)
 calculateConfusionMatrix(fpmodel)
 calculateROCMeasures(fpmodel)
+
+# Decision Tree ####
+getParamSet('classif.rpart')
+
+# make learner tree
+makeatree <- makeLearner('classif.rpart', predict.type = 'response')
+
+# set ncol() cv
+set.cv <- makeResampleDesc("CV", iters = 3)
+
+# Hyper-parameter search
+gs <- makeParamSet(
+  makeIntegerParam('minsplit', lower = 10, upper = 50)
+  , makeIntegerParam('minbucket', lower = 5, upper = 50)
+  , makeNumericParam('cp', lower = 0.001, upp = 0.2)
+)
+
+# gridsearch
+gscontrol <- makeTuneControlGrid()
+
+# tune hyper-parameters
+stune <- tuneParams(
+  learner = makeatree
+  , resampling = set.cv
+  , task = trainTask
+  , par.set = gs
+  , control = gscontrol
+)
+stune$x
+stune$y
+
+# Use hper-parameters for modeling
+t.tree <- setHyperPars(makeatree, par.vals = stune$x)
+# train the model
+t.rpart <- train(t.tree, trainTask)
+getLearnerModel(t.rpart)
+
+# make predictions
+tpmodel <- predict(t.rpart, testTask)
+
+# create submission file
+t.submit <- data.frame(
+  tpmodel$data
+)
+head(t.submit)
+table(t.submit$truth, t.submit$response)
+
+# mlr tree confusion matrix ####
+calculateConfusionMatrix(tpmodel)
+calculateROCMeasures(tpmodel)
