@@ -433,6 +433,5 @@ table(submit$truth, submit$response)
 # mlr logit confustion matrix ####
 mlr.mat <- as.matrix(table(submit$truth, submit$response))
 print(mlr.mat)
-mlr.model.acc <- (mlr.mat[1,1] + mlr.mat[2,2])/sum(mlr.mat)
-mlr.model.recall <- mlr.mat[1,1]/(mlr.mat[1,1] + mlr.mat[1,2])
-mlr.model.precision <-  mlr.mat[1,1]/(mlr.mat[1,1] + mlr.mat[2,1])
+calculateConfusionMatrix(fpmodel)
+calculateROCMeasures(fpmodel)
