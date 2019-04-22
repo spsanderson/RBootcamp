@@ -466,6 +466,7 @@ stune <- tuneParams(
 stune$x
 stune$y
 
+#
 # Use hper-parameters for modeling
 t.tree <- setHyperPars(makeatree, par.vals = stune$x)
 # train the model
@@ -485,3 +486,5 @@ table(t.submit$truth, t.submit$response)
 # mlr tree confusion matrix ####
 calculateConfusionMatrix(tpmodel)
 calculateROCMeasures(tpmodel)
+
+# Random Forest resampling
