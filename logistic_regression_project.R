@@ -487,4 +487,38 @@ table(t.submit$truth, t.submit$response)
 calculateConfusionMatrix(tpmodel)
 calculateROCMeasures(tpmodel)
 
-# Random Forest resampling
+# Random Forest resampling ####
+getParamSet("classif.randomForest")
+
+# create a learner
+rf.learner <- makeLearner(
+  "classif.randomForest"
+  , predict.type = "response"
+  , par.vals = list(
+    ntree = 200
+    , mtry = 3
+  )
+)
+rf.learner$par.vals <- list(importance = T)
+
+# get tunable parameters - gridsearch to find
+rf.param <- makeParamSet(
+  makeIntegerParam("ntree", lower = 50, upper = 500)
+  , makeIntegerParam('mtry', lower = 3, upper = 10)
+  , makeIntegerParam("nodesize", lower = 10, upper = 50)
+)
+
+# random forest 50 iterations
+rf.control <- makeTuneControlRandom(maxit = 50L)
+
+# set 3 fold cv
+rf.set.cv <- makeResampleDesc("CV", iters = 3L)
+
+# hypertuning
+rf.tune <- tuneParams(
+  learner = rf.learner
+  , resampling = rf.set.cv
+  , task = trainTask
+  , par.set = rf.param
+  , control = rf.control
+)
