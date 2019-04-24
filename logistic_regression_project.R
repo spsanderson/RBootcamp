@@ -588,3 +588,59 @@ table(svm.submit$truth, svm.submit$response)
 # mlr tree confusion matrix
 calculateConfusionMatrix(predict.svm)
 calculateROCMeasures(predict.svm)
+
+# mlr gbm ####
+getParamSet("classif.gbm")
+g.gbm <- makeLearner("classif.gbm", predict.type = 'response')
+
+# specify tuning method
+gbm.tune <- makeTuneControlRandom(maxit = 50L)
+
+# 3 fold validation
+gbm.cv <- makeResampleDesc("CV", iters = 3L)
+
+# parameters
+gbm.par<- makeParamSet(
+  makeDiscreteParam("distribution", values = "bernoulli"),
+  makeIntegerParam("n.trees", lower = 100, upper = 1000), #number of trees
+  makeIntegerParam("interaction.depth", lower = 2, upper = 10), #depth of tree
+  makeIntegerParam("n.minobsinnode", lower = 10, upper = 80),
+  makeNumericParam("shrinkage",lower = 0.01, upper = 1)
+)
+
+#tune parameters
+tune.gbm <- tuneParams(
+  learner = g.gbm
+  , task = trainTask
+  , resampling = gbm.cv
+  , measures = acc
+  , par.set = gbm.par
+  , control = gbm.tune
+  )
+
+# check CV accuracy
+tune.gbm$y
+
+# set parameters
+final.gbm <- setHyperPars(
+  learner = g.gbm
+  , par.vals = tune.gbm$x
+  )
+
+# train
+to.gbm <- train(final.gbm, trainTask)
+
+# test 
+pr.gbm <- predict(to.gbm, testTask)
+
+# create submission file
+gbm.submit <- data.frame(
+  pr.gbm$data
+)
+head(gbm.submit)
+table(gbm.submit$truth, gbm.submit$response)
+
+# mlr tree confusion matrix
+calculateConfusionMatrix(pr.gbm)
+calculateROCMeasures(pr.gbm)
+
