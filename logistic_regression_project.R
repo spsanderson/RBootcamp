@@ -5,7 +5,8 @@ library(funModeling)
 library(DataExplorer)
 library(esquisse)
 library(caTools)
-library(ROCR)
+library(mlr)
+library(rJava)
 
 # Get File ####
 adult <- read.csv(file.choose(new = T))
@@ -375,8 +376,6 @@ model.recall <- conf.mat[1,1]/(conf.mat[1,1]+conf.mat[1,2])
 model.precision <-  conf.mat[1,1]/(conf.mat[1,1]+conf.mat[2,1])
 
 # Use MLR ####
-library(mlr)
-library(rJava)
 # Make train and test tasks
 trainTask <- makeClassifTask(data = train, target = "income")
 testTask <- makeClassifTask(data = test, target = "income")
@@ -399,7 +398,7 @@ lm.feat <- generateFilterValuesData(
 )
 plotFilterValues(lm.feat)
 
-# Logit mlr mode ####
+# mlr Logit mode ####
 logistic.learner <- makeLearner('classif.logreg', predict.type = 'response')
 
 # cross validate
@@ -436,7 +435,7 @@ print(mlr.mat)
 calculateConfusionMatrix(fpmodel)
 calculateROCMeasures(fpmodel)
 
-# Decision Tree ####
+# mlr Decision Tree ####
 getParamSet('classif.rpart')
 
 # make learner tree
@@ -487,7 +486,7 @@ table(t.submit$truth, t.submit$response)
 calculateConfusionMatrix(tpmodel)
 calculateROCMeasures(tpmodel)
 
-# Random Forest resampling ####
+# mlr Random Forest resampling ####
 getParamSet("classif.randomForest")
 
 # create a learner
@@ -522,3 +521,70 @@ rf.tune <- tuneParams(
   , par.set = rf.param
   , control = rf.control
 )
+rf.tune$y
+rf.tune$x
+
+# use hyper parms for model
+rf.tree <- setHyperPars(rf.learner, par.vals = rf.tune$x)
+
+#train a model
+rforest <- train(rf.tree, trainTask)
+getLearnerModel(t.rpart)
+
+#make predictions
+rfmodel <- predict(rforest, testTask)
+
+# create submission file
+rf.submit <- data.frame(
+  rfmodel$data
+)
+head(rf.submit)
+table(rf.submit$truth, rf.submit$response)
+
+# mlr tree confusion matrix
+calculateConfusionMatrix(rfmodel)
+calculateROCMeasures(rfmodel)
+
+# mlr SVM ####
+getParamSet("classif.ksvm")
+ksvm <- makeLearner("classif.ksvm", predict.type = 'response')
+
+# Set parameters
+pssvm <- makeParamSet(
+  makeDiscreteParam("C", values = 2^c(-8,-4,-2,0)) # cost parms
+  , makeDiscreteParam("sigma", values = 2^c(-8,-4,0,4)) # RBF kernal parameter
+)
+
+# specify search function
+ctrl <- makeTuneControlGrid()
+
+# tune model
+res <- tuneParams(
+  ksvm
+  , task = trainTask
+  , resampling = set.cv
+  , par.set = pssvm
+  , control = ctrl
+  , measures = acc
+)
+res$y
+
+# set the model with best parameters
+t.svm <- setHyperPars(ksvm, par.vals = res$x)
+
+# train
+par.svm <- train(ksvm, trainTask)
+
+# test
+predict.svm <- predict(par.svm, testTask)
+
+# create submission file
+svm.submit <- data.frame(
+  predict.svm$data
+)
+head(svm.submit)
+table(svm.submit$truth, svm.submit$response)
+
+# mlr tree confusion matrix
+calculateConfusionMatrix(predict.svm)
+calculateROCMeasures(predict.svm)
