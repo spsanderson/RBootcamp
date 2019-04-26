@@ -429,7 +429,7 @@ submit <- data.frame(
 head(submit)
 table(submit$truth, submit$response)
 
-# mlr logit confusion matrix ####
+# mlr logit confusion matrix
 mlr.mat <- as.matrix(table(submit$truth, submit$response))
 print(mlr.mat)
 calculateConfusionMatrix(fpmodel)
