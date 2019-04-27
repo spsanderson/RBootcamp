@@ -63,7 +63,7 @@ adult <- adult %>%
     -type_employer, -type_employer_dplyr
   )
 
-# The assignment says to group govt jobs, i'm not quite sure about this, lets lookk
+# The assignment says to group govt jobs, i'm not quite sure about this, lets look
 # at age and income
 adult %>%
   filter(
@@ -123,7 +123,6 @@ adult <- adult %>%
     )
 
 # Since all look good we can make adult$type_employer equal to type_employer_clean
-adult$type_employer <- NA
 adult$type_employer <- adult$type_emp_govt
 
 # reslect data frame
@@ -345,7 +344,7 @@ adult %>%
     , axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
   )
 
- # Build Logit Model ####
+# Build Logit Model ####
 # Split adult into train and test with a 70/30 split
 # check head
 head(adult, 5)
