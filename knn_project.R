@@ -31,5 +31,17 @@ head(df.final, 2)
 # Train / Test Data ####
 split <- sample.split(df.final$Species, SplitRatio = 0.7)
 
-train.data <- subset(df, split == T)
-test.data <- subset(df, split == F)
+train.data <- subset(df.final, split == T)
+train.species <- subset(df.final$Species, split == T)
+test.data <- subset(df.final, split == F)
+
+create_report(train.data)
+
+# Make KNN ####
+set.seed(101)
+predicted.species <- knn(
+  train.data
+  , test.data
+  , train.species
+  , k = 1
+)
