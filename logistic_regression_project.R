@@ -393,8 +393,8 @@ testTask <- normalizeFeatures(testTask, method = 'standardize')
 lm.feat <- generateFilterValuesData(
   trainTask
   , method = c(
-    "information.gain"
-    , 'chi.squared'
+    "FSelector_information.gain"
+    , 'FSelector_chi.squared'
   )
 )
 plotFilterValues(lm.feat)
