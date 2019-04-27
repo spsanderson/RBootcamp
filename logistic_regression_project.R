@@ -443,7 +443,7 @@ getParamSet('classif.rpart')
 makeatree <- makeLearner('classif.rpart', predict.type = 'response')
 
 # set ncol() cv
-set.cv <- makeResampleDesc("CV", iters = 3)
+set.cv <- makeResampleDesc("CV", iters = ncol(adult))
 
 # Hyper-parameter search
 gs <- makeParamSet(
@@ -644,4 +644,3 @@ table(gbm.submit$truth, gbm.submit$response)
 # mlr tree confusion matrix
 calculateConfusionMatrix(pr.gbm)
 calculateROCMeasures(pr.gbm)
-
