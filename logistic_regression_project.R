@@ -1,12 +1,14 @@
 # Lib Load ####
-library(tidyverse)
-library(Amelia)
-library(funModeling)
-library(DataExplorer)
-library(esquisse)
-library(caTools)
-library(mlr)
-library(rJava)
+install.load::install_load(
+  "tidyverse"
+  , "Amelia"
+  , "funModeling"
+  , "DataExplorer"
+  , "esquisse"
+  , "caTools"
+  , "mlr"
+  , "rJava"
+)
 
 # Get File ####
 adult <- read.csv(file.choose(new = T))
