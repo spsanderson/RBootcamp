@@ -37,6 +37,81 @@ df %>% ggplot(
     ) +
   theme_bw()
 
+df %>% ggplot(
+  aes(
+    x = F.Undergrad
+    , fill = Private
+    )
+  ) +
+  geom_histogram(
+    bins = 30
+    , color = "black"
+    , alpha = 0.5
+    ) +
+  labs(
+    title = "Histogram of Full Time Undergrad"
+    , x = "Full Time Undergrad"
+    , y = "Count"
+    , subtitle = "Filled by Private Yes/No"
+    , fill = "Private"
+    ) +
+  theme_bw()
+
+df %>% ggplot(
+  aes(
+    x = Grad.Rate
+    , fill = Private
+    )
+  ) +
+  geom_histogram(
+    bins = 30
+    , alpha = 0.5
+    , color = "black"
+    ) +
+  labs(
+    title = "Histogram of Graduation Rate"
+    , x = "Graduation Rate"
+    , y = "Count"
+    , subtitle = "Fill by Private Yes/No"
+    , fill = "Private"
+    ) +
+  theme_bw()
+
+# Clean Data ####
+# If grad.rate is over 100 then make 100
+grad.rate.func <- function(rate){
+  if_else(
+    rate > 100
+    , 100
+    , rate
+  )
+}
+
+df$Grad.Rate <- sapply(df$Grad.Rate, grad.rate.func)
+# recheck above hist
+
+# Train / Test split ####
+split <- sample.split(df$Private, SplitRatio = 0.7)
+train.df <- subset(df, split == T)
+test.df <- subset(df, split == F)
+
+# Tree Test ####
+tree.test <- rpart(Private ~ ., data = train.df, method = "class")
+printcp(tree.test)
+plotcp(tree.test)
+rsq.rpart(tree.test)
+print(tree.test)
+summary(tree.test)
+prp(tree.test)
+
+
+
+
+
+
+
+
+
 # Use MLR ####
 # Make train and test tasks
 trainTask <- makeClassifTask(data = train, target = "income")
