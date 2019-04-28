@@ -7,18 +7,35 @@ install.load::install_load(
   , "tidyverse"
   , "mlr"
   , "randomForest"
+  , "ISLR" # for the college df
+  , "caTools"
 )
 
 # Data ####
+df <- College
+str(df)
+head(df, 5)
+plot_missing(df)
+create_report(df)
 
+# EDA ####
+esquisser()
 
-
-
-
-
-
-
-
+df %>% ggplot(
+  aes(
+    x = Room.Board
+    , y = Grad.Rate
+    , color = Private
+  )
+) +
+  geom_point() +
+  labs(
+    title = "Graduation Rate vs. Room and Board"
+    , subtitle = "Colored by Private Yes/No"
+    , x = "Room and Board"
+    , y = "Graduation Rate"
+    ) +
+  theme_bw()
 
 # Use MLR ####
 # Make train and test tasks
