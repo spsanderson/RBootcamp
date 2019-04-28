@@ -34,7 +34,6 @@ split <- sample.split(df.final$Species, SplitRatio = 0.7)
 train.data <- df.final %>%
   filter(split == T) %>%
   select(-Species)
-
 train.species <- subset(df.final$Species, split == T)
 
 test.data <- df.final %>%
