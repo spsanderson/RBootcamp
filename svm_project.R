@@ -76,3 +76,45 @@ loans %>% ggplot(
   ) +
   theme_bw() +
   theme(axis.text.x=element_text(angle=90, hjust=1))
+
+# Data and AES
+loans %>% ggplot(
+  aes(
+    x = fico
+    , y = int.rate
+    #, fill = as.factor(not.fully.paid)
+  )
+) +
+# Geometries
+geom_point(
+  aes(
+    color = not.fully.paid
+  )
+  , alpha = 0.5
+  , position = position_jitter()
+) +
+# Statistics
+# Facets
+# Themes
+  labs(
+    title = "FICO vs Interest Rate Paid"
+    , subtitle = "Colored by Not Fully Paid"
+    , x = "FICO"
+    , y = "Interest Rate"
+    , fill = "Not Fully Paid"
+  ) +
+  theme_minimal()
+# Print
+
+# Split Data ####
+set.seed(seed = 101)
+loansplit <- caTools::sample.split(loans$not.fully.paid, SplitRatio = 0.7)
+train <- subset(loans, loansplit == T)
+test <- subset(loans, loansplit == F)
+
+# Model ####
+model <- svm(not.fully.paid ~ ., data = train)
+summary(model)
+
+pred <- predict(model, newdata = test %>% select(-not.fully.paid))
+table(pred, test$not.fully.paid)
