@@ -118,3 +118,19 @@ summary(model)
 
 pred <- predict(model, newdata = test %>% select(-not.fully.paid))
 table(pred, test$not.fully.paid)
+
+# Tune Model ####
+tune.model <- tune(
+  svm
+  , train.x = not.fully.paid ~ .
+  , data = train
+  , kernel = 'radial'
+  , ranges = list(
+    cost = c(1, 10)
+    , gamma = c(0.01, 1)
+    )
+  )
+summary(tuned.model)
+tuned.model <- svm(not.fully.paid ~ ., data = train, cost = 10, gamma = 0.1)
+tuned.pred <- predict(tuned.model, newdata = test %>% select(-not.fully.paid))
+table(tuned.pred, test$not.fully.paid)
