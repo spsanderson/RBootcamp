@@ -133,3 +133,69 @@ wine %>%
   ) +
   scale_fill_manual(values = c("red", "white")) +
   theme_minimal()
+
+# Create a scatterplot of residual.sugar versus citric.acid, color by red and white wine
+wine %>%
+  ggplot(
+    aes(
+      x = citric.acid
+      , y = residual.sugar
+    )
+  ) +
+  # geometries
+  geom_point(
+   aes(
+     color = label
+   )
+   , alpha = 0.318
+   , position = position_jitter()
+  ) +
+  # Statistics
+  # facets
+  # coordinaates
+  # theme
+  labs(
+    title = "Scatter Plot of Residual Surgars vs Citirc Acid by Wine Color"
+    , x = "Citric Acid"
+    , y = "Residual Sugars"
+    , color = "Red/White"
+  ) +
+  scale_color_manual(values = c("red", "white")) +
+  theme(
+    panel.background = element_rect("grey")
+  )
+
+# Create a scatterplot of volatile.acidity versus residual.sugar, color by red and white wine
+wine %>%
+  ggplot(
+    aes(
+      x = volatile.acidity
+      , y = residual.sugar
+    )
+  ) +
+  # geometries
+  geom_point(
+    aes(
+      color = label
+    )
+    , alpha = 0.318
+    , position = position_jitter()
+  ) +
+  # statistics
+  # facets
+  # coodinates
+  # theme
+  labs(
+    title = "Scatter Plot of Residual Sugars vs Volatile Acidity by Wine Color"
+    , color = "Red/White"
+    , x = "Residual Sugars"
+    , y = "Volatile Acidity"
+  ) +
+  scale_color_manual(values = c("red","white")) +
+  theme(
+    panel.background = element_rect("grey")
+  )
+
+# Make Cluster Data ####
+clus.data <- wine %>% select(-label)
+head(clus.data, 1)
