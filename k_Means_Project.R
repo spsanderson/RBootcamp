@@ -199,3 +199,16 @@ wine %>%
 # Make Cluster Data ####
 clus.data <- wine %>% select(-label)
 head(clus.data, 1)
+
+# make cluster
+set.seed(101)
+wine.cluster <- kmeans(
+  x = clus.data
+  , centers = 2
+  , nstart = 20
+)
+print(wine.cluster)
+table(wine.cluster$cluster, wine$label)
+
+# plot
+clusplot(clus.data, wine.cluster$cluster, color = T, shade = T, labels = 0, lines = 0)
