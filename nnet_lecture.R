@@ -3,6 +3,7 @@ install.load::install_load(
   "MASS"
   , "caTools"
   , "neuralnet"
+  , "ggplot2"
 )
 head(Boston)
 str(Boston)
@@ -41,3 +42,16 @@ true.predictions <- predicted.nn.values$net.result * (max(df$medv) - min(df$medv
 test.r <- (test$medv) * (max(df$medv) - min(df$medv)) + min(df$medv)
 MSE.nn <- sum((test.r - true.predictions)^2) / nrow(test)
 MSE.nn
+
+error.df <- data.frame(test.r, true.predictions)
+head(error.df)
+
+error.df %>%
+  ggplot(
+    aes(
+      x = test.r
+      , y = true.predictions
+    )
+  ) + 
+  geom_point() + 
+  stat_smooth()
