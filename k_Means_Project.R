@@ -2,6 +2,7 @@
 install.load::install_load(
   "tidyverse"
   , "cluster"
+  , "ggplot2"
 )
 
 # Get files ####
@@ -24,3 +25,111 @@ wine <- bind_rows(
 
 head(wine)
 tail(wine)
+
+# EDA ####
+# Data and AES
+wine %>%
+  ggplot(
+    aes(
+      x = residual.sugar
+      , fill = label
+    )
+  ) +
+# Geomtries
+  geom_histogram(
+    color = "black"
+    , alpha = 0.618
+    , binwidth = 1
+  ) +
+# Statistics
+# Facets
+# Coordinates
+# Theme
+  scale_fill_manual(values = c("red", "white")) +
+  labs(
+    title = "Histogram of Sugar Residuals by Wine Color"
+    , y = "Count"
+    , x = "Residual Sugars"
+    , fill = "Red/White"
+  ) +
+  theme_minimal()
+
+# drop outlier from above
+wine %>%
+  filter(residual.sugar < 25) %>%
+  ggplot(
+    aes(
+      x = residual.sugar
+      , fill = label
+    )
+  ) +
+  geom_histogram(
+    binwidth = 1
+    , color = "black"
+    , alpha = 0.618
+  ) +
+  scale_fill_manual(values = c("red", "white")) +
+  labs(
+    title = "Histogram of Sugar Residuals by Wine Color"
+    , subtitle = "Filtered for Residual Surgars < 25"
+    , y = "Count"
+    , x = "Residual Sugars"
+    , fill = "Red/White"
+  ) +
+  theme_minimal()
+
+# Citirc acid
+wine %>%
+  ggplot(
+    aes(
+      x = citric.acid
+      , fill = label
+    )
+  ) +
+  # geometries
+  geom_histogram(
+    color = "black"
+    , alpha = 0.618
+    , binwidth = 0.1
+  ) +
+  # Statistics
+  # Facets
+  # Coordinates
+  # theme
+  scale_fill_manual(
+    values = c("red", "white")
+  ) +
+  labs(
+    title = "Histogram of Citric Acid by Wine Color"
+    , y = "Count"
+    , x = "Citric Acid"
+    , fill = "Red/White"
+  ) +
+  theme_minimal()
+
+# Alcohol
+wine %>%
+  ggplot(
+    aes(
+      x = alcohol
+      , fill = label
+    )
+  ) +
+  # geometries
+  geom_histogram(
+    color = "black"
+    , alpha = 0.618
+    , binwidth = 0.1
+  ) +
+  # Statistics
+  # facets
+  # coordinates
+  # theme
+  labs(
+    title = "Histogram of Alcohol by Wine Color"
+    , y = "Count"
+    , x = "Alcohol"
+    , fill = "Red/White"
+  ) +
+  scale_fill_manual(values = c("red", "white")) +
+  theme_minimal()
