@@ -16,3 +16,11 @@ df2$label <- 'White'
 head(df1)
 head(df2)
 
+# Combine df1 and df2 into wine
+wine <- bind_rows(
+  df1
+  , df2
+)
+
+head(wine)
+tail(wine)
